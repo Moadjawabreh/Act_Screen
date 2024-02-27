@@ -1,0 +1,93 @@
+﻿<Window x:Class="first.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:first"
+        mc:Ignorable="d"
+        Title="Serial Communication" Height="544" Width="785"
+        >
+    <Grid x:Name="___No_Name_" Loaded="Window__Loaded">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Serial Port Setting">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label Width="38" Content="Prot"/>
+                    <ComboBox x:Name="Ports_ComoBox" HorizontalAlignment="Left" Margin="10,0,0,0" Width="112"  />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,15,0,0">
+                    <Label Content="Baudrate"/>
+                    <TextBox Name="baudRate" HorizontalAlignment="Left"  Margin="10,0,0,0" Width="112" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,15,0,0" HorizontalAlignment="Center">
+                    <Button Name="Recieve_btn" Content="Connect" HorizontalAlignment="Center" Height="24" Width="70" Click="Recieve_btn_Click" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Column="0" Margin="0,40" Grid.Row="1" Header="Send Setting">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <CheckBox Width="16" Height="15" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                    <Label Content="Loop" Margin="10,0,0,0"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,15,0,0">
+                    <Label Content="Time"/>
+                    <TextBox Name="Delay_Input" HorizontalAlignment="Left"  Margin="10,0,0,0" Width="112" TextChanged="Delay_Input_TextChanged" />
+                    <Label Content="ms"/>
+
+                </StackPanel>
+                
+                <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Margin="0,15,0,0" HorizontalAlignment="Center">
+                    <Button Name="Clear_btn" Width="50" Height="24" Content="Clear" Click="Clear_btn_Click" ></Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <RichTextBox Height="120" Width="400" Name="Message_Content" Grid.Row="1" Margin="67,200,67,24" Grid.Column="1">
+            <FlowDocument>
+                <Paragraph>
+                    <Run />
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <Button Grid.Column="1" Content="Send" HorizontalAlignment="Left" Margin="427,345,0,-31" Grid.Row="1" Click="Button_Click" Width="40"/>
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1" Height="150" Width="400" Margin="67,0,67,182" Grid.Column="1" IsReadOnly="True" Name="Recieve_RichBox">
+            <FlowDocument>
+                <Paragraph>
+                    <Run />
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+
+
+
+
+    </Grid>
+
+</Window>

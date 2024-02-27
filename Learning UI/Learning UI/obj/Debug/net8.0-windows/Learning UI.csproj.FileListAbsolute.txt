@@ -1,0 +1,20 @@
+C:\Users\DELL\Desktop\Learning UI\Learning UI\bin\Debug\net8.0-windows\Learning UI.exe
+C:\Users\DELL\Desktop\Learning UI\Learning UI\bin\Debug\net8.0-windows\Learning UI.deps.json
+C:\Users\DELL\Desktop\Learning UI\Learning UI\bin\Debug\net8.0-windows\Learning UI.runtimeconfig.json
+C:\Users\DELL\Desktop\Learning UI\Learning UI\bin\Debug\net8.0-windows\Learning UI.dll
+C:\Users\DELL\Desktop\Learning UI\Learning UI\bin\Debug\net8.0-windows\Learning UI.pdb
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI_MarkupCompile.cache
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI_MarkupCompile.lref
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.g.resources
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.AssemblyInfoInputs.cache
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.AssemblyInfo.cs
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.dll
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\refint\Learning UI.dll
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.pdb
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\Learning UI.genruntimeconfig.cache
+C:\Users\DELL\Desktop\Learning UI\Learning UI\obj\Debug\net8.0-windows\ref\Learning UI.dll

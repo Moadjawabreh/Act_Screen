@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Learning_UI</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="backg.jpeg" />
+    <None Remove="download %281%29.jpeg" />
+    <None Remove="Download premium vector of Rectangle pink neon frame on a pink  background vector by Tang about neon light pink frame, pink neon frame, minimal pink background, blank, and blank space 931937.jpeg" />
+    <None Remove="facebook %282%29.png" />
+    <None Remove="Free Aesthetic iPhone Backgrounds &amp; Widgets _ Guitar &amp; Lace.jpeg" />
+    <None Remove="free-fire.jpeg" />
+    <None Remove="Golden Green Mandala Art Background With Border Invitation Card Wedding Islamic Arabic Floral Pattern Diwali Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <None Remove="linkedin %281%29.png" />
+    <None Remove="Login Background Images - Free Download on Freepik.jpeg" />
+    <None Remove="Moldura dourada sobre fundo de mármore branco _ Vetor Grátis.jpeg" />
+    <None Remove="Premium Photo _ Abstract white and gold luxury marble background ai.jpeg" />
+    <None Remove="Red Gradient Abstract Geometric Background Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <None Remove="Register - Login #templates #zicxi.jpeg" />
+    <None Remove="Registration.jpg" />
+    <None Remove="social.png" />
+    <None Remove="Texture Pattern Turquoise Surface Background Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <None Remove="TEXTURE.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="backg.jpeg" />
+    <Resource Include="download (1).jpeg" />
+    <Resource Include="Download premium vector of Rectangle pink neon frame on a pink  background vector by Tang about neon light pink frame, pink neon frame, minimal pink background, blank, and blank space 931937.jpeg" />
+    <Resource Include="facebook (2).png" />
+    <Resource Include="Free Aesthetic iPhone Backgrounds &amp; Widgets _ Guitar &amp; Lace.jpeg" />
+    <Resource Include="free-fire.jpeg" />
+    <Resource Include="Golden Green Mandala Art Background With Border Invitation Card Wedding Islamic Arabic Floral Pattern Diwali Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <Resource Include="linkedin (1).png" />
+    <Resource Include="Login Background Images - Free Download on Freepik.jpeg" />
+    <Resource Include="Moldura dourada sobre fundo de mármore branco _ Vetor Grátis.jpeg" />
+    <Resource Include="Premium Photo _ Abstract white and gold luxury marble background ai.jpeg" />
+    <Resource Include="Red Gradient Abstract Geometric Background Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <Resource Include="Register - Login #templates #zicxi.jpeg" />
+    <Resource Include="Registration.jpg" />
+    <Resource Include="social.png" />
+    <Resource Include="Texture Pattern Turquoise Surface Background Wallpaper Image For Free Download - Pngtree.jpeg" />
+    <Resource Include="TEXTURE.jpeg" />
+  </ItemGroup>
+
+</Project>

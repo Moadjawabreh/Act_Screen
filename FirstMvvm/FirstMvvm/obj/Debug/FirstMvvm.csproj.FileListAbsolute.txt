@@ -1,0 +1,15 @@
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\bin\Debug\FirstMvvm.exe.config
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\bin\Debug\FirstMvvm.exe
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\bin\Debug\FirstMvvm.pdb
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.csproj.AssemblyReference.cache
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\MainWindow.g.cs
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\App.g.cs
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm_MarkupCompile.cache
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm_MarkupCompile.lref
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\MainWindow.baml
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.g.resources
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.Properties.Resources.resources
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.csproj.GenerateResource.cache
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.exe
+C:\Users\DELL\Desktop\FirstMvvm\FirstMvvm\obj\Debug\FirstMvvm.pdb

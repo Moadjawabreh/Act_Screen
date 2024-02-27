@@ -1,0 +1,15 @@
+C:\Users\DELL\Desktop\first\first\bin\Debug\first.exe
+C:\Users\DELL\Desktop\first\first\bin\Debug\first.exe.config
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.csproj.AssemblyReference.cache
+C:\Users\DELL\Desktop\first\first\obj\Debug\MainWindow.g.cs
+C:\Users\DELL\Desktop\first\first\obj\Debug\App.g.cs
+C:\Users\DELL\Desktop\first\first\obj\Debug\first_MarkupCompile.cache
+C:\Users\DELL\Desktop\first\first\obj\Debug\first_MarkupCompile.lref
+C:\Users\DELL\Desktop\first\first\obj\Debug\MainWindow.baml
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.g.resources
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.Properties.Resources.resources
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.csproj.GenerateResource.cache
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.exe
+C:\Users\DELL\Desktop\first\first\obj\Debug\first.pdb
+C:\Users\DELL\Desktop\first\first\bin\Debug\first.pdb

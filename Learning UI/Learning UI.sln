@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learning UI", "Learning UI\Learning UI.csproj", "{4DF3C944-9A3E-40C2-A539-65CC0781938F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DF3C944-9A3E-40C2-A539-65CC0781938F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF3C944-9A3E-40C2-A539-65CC0781938F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF3C944-9A3E-40C2-A539-65CC0781938F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF3C944-9A3E-40C2-A539-65CC0781938F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A50F0671-AC84-44A6-8C36-EDC67B174D72}
+	EndGlobalSection
+EndGlobal
