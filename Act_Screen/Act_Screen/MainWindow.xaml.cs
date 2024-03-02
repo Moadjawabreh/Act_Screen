@@ -12,6 +12,8 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.Windows.Documents;
 using OfficeOpenXml.Style;
+using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 
 namespace Act_Screen
@@ -22,7 +24,7 @@ namespace Act_Screen
 		private int currentActuatorIndex = 0;
 		private SerialPort ports = new SerialPort();
 		private int currentRowIndex = 0;
-		private bool isStartEnabled = false;
+		private bool permitionToEnable = false;
 		private byte[] lastMessageSent;
 		private List<RowDefinition> manuallyAddedRows = new List<RowDefinition>();
 		private int arrowColumn = 0;
@@ -145,18 +147,18 @@ namespace Act_Screen
 									rowGrid.Children[2] is StackPanel checkBoxStackPanel &&
 										checkBoxStackPanel.Children.Count > 0 &&
 												checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
-					{
-						yesCheckBox.IsEnabled = false;
-					}
-					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
-							rowBorder2.Child is Grid rowGrid2 &&
-								rowGrid2.Children.Count > 2 &&
-									rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
-										checkBoxStackPanel2.Children.Count > 0 &&
-												checkBoxStackPanel2.Children[1] is RadioButton NoCheckBox)
-					{
-						NoCheckBox.IsEnabled = false;
-					}
+						{
+							yesCheckBox.IsEnabled = false;
+						}
+						if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
+								rowBorder2.Child is Grid rowGrid2 &&
+									rowGrid2.Children.Count > 2 &&
+										rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
+											checkBoxStackPanel2.Children.Count > 0 &&
+													checkBoxStackPanel2.Children[1] is RadioButton NoCheckBox)
+						{
+							NoCheckBox.IsEnabled = false;
+						}
 					});
 
 				}
@@ -175,32 +177,76 @@ namespace Act_Screen
 		private void UpdateActionBackgroundColor(bool isMatch)
 		{
 			// Find the TextBlock representing the current action
+			System.Windows.Controls.Border actionAction = GetBorderAction(currentRowIndex);
+
+			// Find the TextBlock representing the current action
 			TextBlock actionTextBlock = GetActionTextBlock(currentRowIndex);
 
-			if (actionTextBlock != null)
+
+			if (actionAction != null)
 			{
 				// Update the background color
 
 				Application.Current.Dispatcher.Invoke(() =>
 				{
+					actionAction.Background = isMatch ? Brushes.LightGreen : Brushes.Red;
 					actionTextBlock.Background = isMatch ? Brushes.LightGreen : Brushes.Red;
 				});
 			}
+
+
 		}
 
-		private TextBlock GetActionTextBlock(int rowIndex)
+		private System.Windows.Controls.Border GetBorderAction(int rowIndex)
 		{
-			TextBlock? actionTextBlock = null;
+			System.Windows.Controls.Border childBorder = null;
 
 			Application.Current.Dispatcher.Invoke(() =>
 			{
 				if (rowIndex >= 0 && rowIndex < tableGrid.Children.Count)
 				{
-					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder)
+					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border border)
 					{
-						actionTextBlock = (rowBorder.Child as Grid)?.Children
-							.OfType<TextBlock>()
-							.FirstOrDefault(tb => Grid.GetColumn(tb) == 1);
+						// Check if the border contains at least two children
+						if (border.Child is Grid innerGrid && innerGrid.Children.Count >= 2)
+						{
+							// Access the second child (index 1) of the inner grid
+							if (innerGrid.Children[1] is System.Windows.Controls.Border secondBorder)
+							{
+								childBorder = secondBorder;
+							}
+						}
+					}
+				}
+
+
+
+			});
+
+
+			return childBorder;
+		}
+
+		private TextBlock GetActionTextBlock(int rowIndex)
+		{
+			TextBlock actionTextBlock = null;
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				if (rowIndex >= 0 && rowIndex < tableGrid.Children.Count)
+				{
+					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border border)
+					{
+						// Check if the border contains at least two children
+						if (border.Child is Grid innerGrid && innerGrid.Children.Count >= 2)
+						{
+							// Access the second child (index 1) of the inner grid
+							if (innerGrid.Children[1] is System.Windows.Controls.Border secondBorder)
+							{
+								// Find the TextBlock inside the second border
+								actionTextBlock = secondBorder.Child as TextBlock;
+							}
+						}
 					}
 				}
 			});
@@ -208,11 +254,7 @@ namespace Act_Screen
 			return actionTextBlock;
 		}
 
-		private void EnableStartButton()
-		{
-			startBtn.IsEnabled = true;
-			isStartEnabled = true;
-		}
+
 
 		private void AddNewActuator_Click(object sender, RoutedEventArgs e)
 		{
@@ -227,30 +269,202 @@ namespace Act_Screen
 				newActuator.Name = "Ac" + actNameCount;
 				AddNewRow(newActuator);
 
-				EnableStartButton();
+				if (!permitionToEnable)
+				{
+					startBtn.IsEnabled = true;
+				}
 			}
 		}
 
 		private void AddNewRow(Actuator actuator)
 		{
-			// Create new row definition
 			RowDefinition newRow = new RowDefinition();
 			newRow.Height = GridLength.Auto;
 			tableGrid.RowDefinitions.Add(newRow);
-			// Create elements for the new row
+
 			TextBlock nameTextBlock = new TextBlock() { Text = $"{actuator.Name}", Margin = new Thickness(5) };
 			TextBlock actionTextBlock = new TextBlock()
 			{
 				Foreground = Brushes.Black,
 				Background = Brushes.LightPink,
 				HorizontalAlignment = HorizontalAlignment.Center,
+				VerticalAlignment = VerticalAlignment.Center, 
 				Margin = new Thickness(5),
 				FontFamily = new FontFamily("Arial"),
-				FontSize = 14 // Set your desired font size here
+				FontSize = 14 
 			};
 
-			RadioButton checkBox = new RadioButton() { IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Center, Content = "YES", Margin = new Thickness(5) };
-			RadioButton checkBox2 = new RadioButton() { IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Center, Content = "NO", Margin = new Thickness(5) };
+			// Create a border around the TextBlock
+			System.Windows.Controls.Border border = new System.Windows.Controls.Border()
+			{
+				BorderBrush = Brushes.Black, 
+				CornerRadius = new CornerRadius(3),
+				Padding = new Thickness(5),
+				Width = 70,
+				Margin = new Thickness(0, 2, 0, 2),
+				Background = Brushes.LightPink,
+
+
+			};
+			// Create RadioButton for "YES"
+			// Create RadioButton for "YES"
+			RadioButton yesRadioButton = new RadioButton()
+			{
+				IsEnabled = false,
+				HorizontalAlignment = HorizontalAlignment.Center,
+				Margin = new Thickness(5),
+				Template = CreateRadioButtonTemplate(Brushes.Green, Brushes.Transparent),
+				Content = "Yes"
+			};
+
+			yesRadioButton.ToolTip = "YES";
+			yesRadioButton.MouseMove += (sender, e) =>
+			{
+				if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
+				{
+					ShowToolTip(sender as RadioButton);
+				}
+				else
+				{
+					// Hide the tooltip if the mouse is not over the circle
+					HideToolTip(sender as RadioButton);
+				}
+			};
+
+			yesRadioButton.Checked += (sender, e) => UpdateRadioButtonTemplate(sender as RadioButton, Brushes.Green);
+
+			// Create RadioButton for "NO"
+			RadioButton noRadioButton = new RadioButton()
+			{
+				IsEnabled = false,
+				HorizontalAlignment = HorizontalAlignment.Center,
+				Margin = new Thickness(5),
+				Template = CreateRadioButtonTemplate(Brushes.Red, Brushes.Transparent),
+				Content = "No"
+			};
+
+			noRadioButton.ToolTip = "NO";
+			noRadioButton.MouseMove += (sender, e) =>
+			{
+				if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
+				{
+					ShowToolTip(sender as RadioButton);
+				}
+				else
+				{
+					// Hide the tooltip if the mouse is not over the circle
+					HideToolTip(sender as RadioButton);
+				}
+			};
+			noRadioButton.Checked += (sender, e) => UpdateRadioButtonTemplate(sender as RadioButton, Brushes.Red);
+
+			void ShowToolTip(RadioButton radioButton)
+			{
+				if (radioButton != null && !string.IsNullOrEmpty(radioButton.ToolTip as string))
+				{
+					ToolTip tt = new ToolTip();
+					tt.Content = radioButton.ToolTip;
+					radioButton.ToolTip = tt;
+					tt.IsOpen = true;
+				}
+			}
+
+			bool IsMouseOverCircle(RadioButton radioButton, Point mousePosition)
+			{
+				if (radioButton != null)
+				{
+					// Calculate the center point of the circle
+					double centerX = radioButton.ActualWidth / 2;
+					double centerY = radioButton.ActualHeight / 2;
+
+					// Calculate the distance between the mouse position and the center of the circle
+					double distance = Math.Sqrt(Math.Pow(mousePosition.X - centerX, 2) + Math.Pow(mousePosition.Y - centerY, 2));
+
+					// Check if the distance is less than the radius of the circle
+					return distance <= radioButton.ActualWidth / 2;
+				}
+
+				return false;
+			}
+
+			void HideToolTip(RadioButton radioButton)
+			{
+				if (radioButton != null)
+				{
+					ToolTip tt = radioButton.ToolTip as ToolTip;
+					if (tt != null)
+					{
+						tt.IsOpen = false;
+					}
+				}
+			}
+
+
+			void UpdateRadioButtonTemplate(RadioButton radioButton, Brush brush)
+			{
+				if (radioButton != null && radioButton.Template != null)
+				{
+					Grid grid = (Grid)radioButton.Template.FindName("RadioButtonGrid", radioButton);
+					if (grid != null)
+					{
+						Ellipse outerCircle = (Ellipse)grid.FindName("OuterCircle");
+						if (outerCircle != null)
+						{
+							outerCircle.Fill = brush;
+						}
+					}
+				}
+			}
+
+			// Function to create custom control template for RadioButton
+
+
+
+
+
+
+			ControlTemplate CreateRadioButtonTemplate(Brush brush, Brush backgroundBrush)
+			{
+				ControlTemplate template = new ControlTemplate(typeof(RadioButton));
+
+				// Create Grid to hold the circuit
+				var grid = new FrameworkElementFactory(typeof(Grid));
+				grid.Name = "RadioButtonGrid";
+
+				// Create outer circle for the circuit
+				var outerCircle = new FrameworkElementFactory(typeof(Ellipse));
+				outerCircle.SetValue(Ellipse.WidthProperty, 30.0);
+				outerCircle.SetValue(Ellipse.HeightProperty, 30.0);
+				outerCircle.SetValue(Shape.StrokeProperty, brush);
+				outerCircle.SetValue(Shape.StrokeThicknessProperty, 2.0);
+				outerCircle.SetValue(Shape.FillProperty, backgroundBrush);
+				outerCircle.Name = "OuterCircle";
+
+				// Add the outer circle to the grid
+				grid.AppendChild(outerCircle);
+
+				// Create inner circle for the radio button
+				var innerCircle = new FrameworkElementFactory(typeof(Ellipse));
+				innerCircle.SetValue(Ellipse.WidthProperty, 16.0);
+				innerCircle.SetValue(Ellipse.HeightProperty, 16.0);
+				innerCircle.SetValue(Ellipse.FillProperty, brush);
+				innerCircle.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+				innerCircle.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
+
+				// Add the inner circle to the grid
+				grid.AppendChild(innerCircle);
+
+				// Add the grid to the template
+				template.VisualTree = grid;
+				return template;
+			}
+
+
+
+
+
+
+
 
 			if (actuator.CurrentActionIndex >= 0 && actuator.CurrentActionIndex < actuator.Actions.Count)
 			{
@@ -284,15 +498,21 @@ namespace Act_Screen
 			rowGrid.Children.Add(nameTextBlock);
 			Grid.SetColumn(nameTextBlock, 0);
 
-			rowGrid.Children.Add(actionTextBlock);
-			Grid.SetColumn(actionTextBlock, 1);
+
+			border.Child = actionTextBlock; // Set the TextBlock as the child of the border
+
+
+			rowGrid.Children.Add(border); // Add the border to the grid instead of the TextBlock
+
+			Grid.SetColumn(border, 1); // Set the column for the border
+
 
 			StackPanel checkBoxStackPanel = new StackPanel();
 			checkBoxStackPanel.Orientation = Orientation.Horizontal;
 			Grid.SetColumn(checkBoxStackPanel, 2);
 
-			checkBoxStackPanel.Children.Add(checkBox);
-			checkBoxStackPanel.Children.Add(checkBox2);
+			checkBoxStackPanel.Children.Add(yesRadioButton);
+			checkBoxStackPanel.Children.Add(noRadioButton);
 
 			// Add the stack panel to the grid
 			rowGrid.Children.Add(checkBoxStackPanel);
@@ -311,16 +531,14 @@ namespace Act_Screen
 				// Create and position the arrow
 				arrow1 = new System.Windows.Shapes.Path()
 				{
-					Data = Geometry.Parse("M0,0 L5,5 L10,0 Z"), // Triangle shape pointing right
-					Fill = Brushes.Red // Change color as needed
+					Data = Geometry.Parse("M0,0 L5,5 L10,0 Z"), 
+					Fill = Brushes.Red 
 				};
 				arrow1.Visibility = Visibility.Visible;
 
-				// Position the arrow on the left side of the row
 				Grid.SetColumn(arrow1, arrowColumn);
 				Grid.SetRow(arrow1, arrowRow);
 
-				// Add the arrow to the table grid
 				tableGrid.Children.Add(arrow1);
 
 			}
@@ -379,6 +597,7 @@ namespace Act_Screen
 					ports.PortName = ports_cmbox.SelectedItem.ToString();
 					ports.BaudRate = Convert.ToInt32(Baud_cmbox.SelectedItem);
 					ports.Open();
+					label_Color.Background = Brushes.Green;
 				}
 			}
 			catch (Exception ex)
@@ -402,6 +621,8 @@ namespace Act_Screen
 					startBtn.IsEnabled = false;
 					Baud_cmbox.IsEnabled = false;
 					ports_cmbox.IsEnabled = false;
+
+					permitionToEnable = true;
 				}
 				catch (Exception ex)
 				{
@@ -464,7 +685,7 @@ namespace Act_Screen
 			{
 				currentRowIndex++;
 				currentActuatorIndex++;
-				startBtn.IsEnabled = true;
+				permitionToEnable = false;
 				Baud_cmbox.IsEnabled = true;
 				ports_cmbox.IsEnabled = true;
 				// Update the arrow position
@@ -578,8 +799,7 @@ namespace Act_Screen
 					// Add headers to the worksheet
 					worksheet.Cells["A1"].Value = "Actuator";
 					worksheet.Cells["B1"].Value = "Action";
-					worksheet.Cells["C1"].Value = "Completed";
-					worksheet.Cells["D1"].Value = "Not Completed";
+					worksheet.Cells["C1"].Value = "Status";
 
 					// Make the cells bold
 					using (var range3 = worksheet.Cells["A1:D1"])
@@ -608,18 +828,29 @@ namespace Act_Screen
 					row = 2;
 
 					// Define formatting for the entire range
-					var range = worksheet.Cells[row, 3, row + actionList.Count - 1, 4];
+					var range = worksheet.Cells[row, 3, row + actionList.Count - 1, 3]; // Specify only column 3
 					range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 					range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 					range.Style.Font.Bold = true;
 					range.Style.Fill.PatternType = ExcelFillStyle.Solid;
 					range.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#ADD8E6")); // Light Blue color
 
+
 					// Write data from actionList to Excel worksheet
 					foreach (var actionWithCheckboxes in actionList)
 					{
-						worksheet.Cells[row, 3].Value = actionWithCheckboxes.CheckBox1Checked ? "Yes" : "No";
-						worksheet.Cells[row, 4].Value = actionWithCheckboxes.CheckBox2Checked ? "Yes" : "No";
+						if (actionWithCheckboxes.CheckBox1Checked == true)
+						{
+							worksheet.Cells[row, 3].Value = "YES";
+							worksheet.Cells[row, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+							worksheet.Cells[row, 3].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Green); // Set background color to green
+						}
+						else
+						{
+							worksheet.Cells[row, 3].Value = "No";
+							worksheet.Cells[row, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+							worksheet.Cells[row, 3].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Red); // Set background color to red
+						}
 						row++;
 					}
 
@@ -652,6 +883,8 @@ namespace Act_Screen
 
 		private void ports_cmbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			label_Color.Background = Brushes.Red;
+
 			ports.Close();
 		}
 	}
@@ -676,7 +909,7 @@ namespace Act_Screen
 			{
 				if (CurrentActionIndex >= 0 && CurrentActionIndex < Actions.Count)
 					return Actions[CurrentActionIndex];
-				return null; 
+				return null;
 			}
 		}
 	}

@@ -5,7 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Act_Screen"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Actuators" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF87CEEB" />
+                                <!-- Lighter color when mouse is over -->
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#FFB0B0B0" />
+                                <!-- Darker color when disabled -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
     <Grid Background="#F0F0F0">
         <!-- Main Grid with two rows -->
         <Grid.RowDefinitions>
@@ -43,13 +74,23 @@
 
         <!-- StackPanel for the buttons -->
         <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" Height="50">
+            <Label VerticalAlignment="Center" Content="Port"></Label>
             <ComboBox Name="ports_cmbox" Width="100" Height="30" Margin="10,0,10,0" SelectionChanged="ports_cmbox_SelectionChanged" ></ComboBox>
+            <Label VerticalAlignment="Center" Content="Baud Rate"></Label>
             <ComboBox Name="Baud_cmbox"  Width="100" Height="30" Margin="10,0,10,0"></ComboBox>
-            <Label  VerticalAlignment="Center" Foreground="Black" Content="{Binding LabelContent}" FontSize="18" Margin="10,0,0,0"/>
-            <Button Name="startBtn"  Content="Start" Margin="20,0"  Width="100" Background="#3498DB" Foreground="White" BorderBrush="#2ECC71" BorderThickness="0" Click="startBtn_Click" />
-            <!--<Button Name="NextBtn" Content="Next" Margin="20,0" Width="100" Background="#3498DB" Foreground="White" BorderBrush="#FF5D1C46" BorderThickness="0" Click="NextBtn_Click" />-->
-            <Button Name="finish_Btn" Content="Finish" Margin="20,0" Width="100" Background="#3498DB" Foreground="White" BorderBrush="#E74C3C" BorderThickness="0" Click="finish_Btn_Click" />
-            <Button Content="Add New Actuator" Margin="20,0" Width="150" Background="#3498DB" Foreground="White" BorderBrush="#9B59B6" BorderThickness="0" Click="AddNewActuator_Click"/>
+            <Label Name="label_Color" VerticalAlignment="Center" Background="Red" Foreground="Black" Content="{Binding LabelContent}" FontSize="18" Margin="10,0,0,0" RenderTransformOrigin="0.5,0.5">
+                <Label.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-47.098"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Label.RenderTransform>
+            </Label>
+            <Button Name="startBtn" Content="Start" Margin="20,0" Width="80" Background="#FF69A2B5" Foreground="White" BorderBrush="#2ECC71" BorderThickness="0" Click="startBtn_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Name="finish_Btn" Content="Finish" Margin="20,0" Width="80" Background="#FF69A2B5" Foreground="White" BorderBrush="#E74C3C" BorderThickness="0" Click="finish_Btn_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="Add New Actuator" Margin="20,0" Width="130" Background="#FF69A2B5" Foreground="White" BorderBrush="#9B59B6" BorderThickness="0" Click="AddNewActuator_Click" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>
