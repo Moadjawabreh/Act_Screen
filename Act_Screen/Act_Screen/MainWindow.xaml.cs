@@ -54,7 +54,7 @@ namespace Act_Screen
 			delayTimer.Interval = TimeSpan.FromSeconds(1.5);
 			delayTimer.Tick += DelayTimer_Tick;
 
-			Baud_cmbox.ItemsSource = new object[] { 9600 };
+			Baud_cmbox.ItemsSource = new object[] { 9600 , 19200,38400,57600,115200};
 			ports_cmbox.ItemsSource = SerialPort.GetPortNames();
 		}
 
@@ -113,9 +113,9 @@ namespace Act_Screen
 													delayTimer.Start();
 												};
 											}
-											if (checkBoxStackPanel.Children.Count > 0 && checkBoxStackPanel.Children[1] is RadioButton noCheckBox)
+											if (checkBoxStackPanel.Children.Count > 0 && checkBoxStackPanel.Children[2] is RadioButton noCheckBox)
 											{
-												checkBoxStackPanel.Children[1].IsEnabled = true;
+												checkBoxStackPanel.Children[2].IsEnabled = true;
 
 												noCheckBox.Checked += (sender, e) =>
 												{
@@ -155,7 +155,7 @@ namespace Act_Screen
 									rowGrid2.Children.Count > 2 &&
 										rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
 											checkBoxStackPanel2.Children.Count > 0 &&
-													checkBoxStackPanel2.Children[1] is RadioButton NoCheckBox)
+													checkBoxStackPanel2.Children[2] is RadioButton NoCheckBox)
 						{
 							NoCheckBox.IsEnabled = false;
 						}
@@ -163,6 +163,36 @@ namespace Act_Screen
 
 				}
 			}
+			else
+			{
+
+				UpdateActionBackgroundColor(false);
+
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+
+					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder &&
+						rowBorder.Child is Grid rowGrid &&
+							rowGrid.Children.Count > 2 &&
+								rowGrid.Children[2] is StackPanel checkBoxStackPanel &&
+									checkBoxStackPanel.Children.Count > 0 &&
+											checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
+					{
+						yesCheckBox.IsEnabled = false;
+					}
+					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
+							rowBorder2.Child is Grid rowGrid2 &&
+								rowGrid2.Children.Count > 2 &&
+									rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
+										checkBoxStackPanel2.Children.Count > 0 &&
+												checkBoxStackPanel2.Children[2] is RadioButton NoCheckBox)
+					{
+						NoCheckBox.IsEnabled = false;
+					}
+				});
+
+			}
+
 		}
 
 		private void DelayTimer_Tick(object sender, EventArgs e)
@@ -282,7 +312,7 @@ namespace Act_Screen
 			newRow.Height = GridLength.Auto;
 			tableGrid.RowDefinitions.Add(newRow);
 
-			TextBlock nameTextBlock = new TextBlock() { Text = $"{actuator.Name}", Margin = new Thickness(5) };
+			TextBlock nameTextBlock = new TextBlock() { Text = $"{actuator.Name}", Margin = new Thickness(5), VerticalAlignment = VerticalAlignment.Center };
 			TextBlock actionTextBlock = new TextBlock()
 			{
 				Foreground = Brushes.Black,
@@ -307,6 +337,20 @@ namespace Act_Screen
 
 			};
 			// Create RadioButton for "YES"
+			Label labelYes = new Label();
+			labelYes.Content = "Yes";
+			labelYes.FontWeight = FontWeights.Bold; // Set the font weight to bold
+			labelYes.HorizontalContentAlignment = HorizontalAlignment.Center; // Center the content horizontally
+			labelYes.VerticalAlignment = VerticalAlignment.Center; // Center the content horizontally
+			labelYes.Margin = new Thickness(0, 0, 5, 0);
+
+
+			Label labelNo = new Label();
+			labelNo.Content = "No";
+			labelNo.FontWeight = FontWeights.Bold; // Set the font weight to bold
+			labelNo.VerticalAlignment = VerticalAlignment.Center; // Center the content horizontally
+			labelNo.Margin = new Thickness(0, 0, 0, 0);
+
 			// Create RadioButton for "YES"
 			RadioButton yesRadioButton = new RadioButton()
 			{
@@ -317,19 +361,19 @@ namespace Act_Screen
 				Content = "Yes"
 			};
 
-			yesRadioButton.ToolTip = "YES";
-			yesRadioButton.MouseMove += (sender, e) =>
-			{
-				if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
-				{
-					ShowToolTip(sender as RadioButton);
-				}
-				else
-				{
-					// Hide the tooltip if the mouse is not over the circle
-					HideToolTip(sender as RadioButton);
-				}
-			};
+			//yesRadioButton.ToolTip = "YES";
+			//yesRadioButton.MouseMove += (sender, e) =>
+			//{
+			//	if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
+			//	{
+			//		ShowToolTip(sender as RadioButton);
+			//	}
+			//	else
+			//	{
+			//		// Hide the tooltip if the mouse is not over the circle
+			//		HideToolTip(sender as RadioButton);
+			//	}
+			//};
 
 			yesRadioButton.Checked += (sender, e) => UpdateRadioButtonTemplate(sender as RadioButton, Brushes.Green);
 
@@ -343,19 +387,20 @@ namespace Act_Screen
 				Content = "No"
 			};
 
-			noRadioButton.ToolTip = "NO";
-			noRadioButton.MouseMove += (sender, e) =>
-			{
-				if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
-				{
-					ShowToolTip(sender as RadioButton);
-				}
-				else
-				{
-					// Hide the tooltip if the mouse is not over the circle
-					HideToolTip(sender as RadioButton);
-				}
-			};
+			//noRadioButton.ToolTip = "NO";
+			//noRadioButton.MouseMove += (sender, e) =>
+			//{
+			//	if (IsMouseOverCircle(sender as RadioButton, e.GetPosition(sender as IInputElement)))
+			//	{
+			//		ShowToolTip(sender as RadioButton);
+			//	}
+			//	else
+			//	{
+			//		// Hide the tooltip if the mouse is not over the circle
+			//		HideToolTip(sender as RadioButton);
+			//	}
+			//};
+
 			noRadioButton.Checked += (sender, e) => UpdateRadioButtonTemplate(sender as RadioButton, Brushes.Red);
 
 			void ShowToolTip(RadioButton radioButton)
@@ -419,10 +464,6 @@ namespace Act_Screen
 			// Function to create custom control template for RadioButton
 
 
-
-
-
-
 			ControlTemplate CreateRadioButtonTemplate(Brush brush, Brush backgroundBrush)
 			{
 				ControlTemplate template = new ControlTemplate(typeof(RadioButton));
@@ -458,12 +499,6 @@ namespace Act_Screen
 				template.VisualTree = grid;
 				return template;
 			}
-
-
-
-
-
-
 
 
 			if (actuator.CurrentActionIndex >= 0 && actuator.CurrentActionIndex < actuator.Actions.Count)
@@ -512,7 +547,9 @@ namespace Act_Screen
 			Grid.SetColumn(checkBoxStackPanel, 2);
 
 			checkBoxStackPanel.Children.Add(yesRadioButton);
+			checkBoxStackPanel.Children.Add(labelYes);
 			checkBoxStackPanel.Children.Add(noRadioButton);
+			checkBoxStackPanel.Children.Add(labelNo);
 
 			// Add the stack panel to the grid
 			rowGrid.Children.Add(checkBoxStackPanel);
