@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.IO;											   
 using System.IO.Ports;
 using System.Security.Principal;
 using System.Windows;
@@ -14,6 +14,7 @@ using System.Windows.Documents;
 using OfficeOpenXml.Style;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Act_Screen
@@ -54,7 +55,7 @@ namespace Act_Screen
 			delayTimer.Interval = TimeSpan.FromSeconds(1.5);
 			delayTimer.Tick += DelayTimer_Tick;
 
-			Baud_cmbox.ItemsSource = new object[] { 9600 , 19200,38400,57600,115200};
+			Baud_cmbox.ItemsSource = new object[] { 9600, 19200, 38400, 57600, 115200 };
 			ports_cmbox.ItemsSource = SerialPort.GetPortNames();
 		}
 
@@ -83,7 +84,7 @@ namespace Act_Screen
 					if (lastMessageSent[i] != receivedMessage[i])
 					{
 						match = false;
-						break;
+						ErrorReceivedMessage();
 					}
 				}
 				ActionWithCheckboxes newAction = new ActionWithCheckboxes();
@@ -104,7 +105,7 @@ namespace Act_Screen
 											if (checkBoxStackPanel.Children.Count > 0 && checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
 											{
 												checkBoxStackPanel.Children[0].IsEnabled = true;
-
+												yesCheckBox.Template = CreateRadioButtonTemplate(Brushes.Green, Brushes.Transparent);
 												yesCheckBox.Checked += (sender, e) =>
 												{
 													newAction.CheckBox1Checked = true;
@@ -116,6 +117,7 @@ namespace Act_Screen
 											if (checkBoxStackPanel.Children.Count > 0 && checkBoxStackPanel.Children[2] is RadioButton noCheckBox)
 											{
 												checkBoxStackPanel.Children[2].IsEnabled = true;
+												noCheckBox.Template=CreateRadioButtonTemplate(Brushes.Red, Brushes.Transparent);
 
 												noCheckBox.Checked += (sender, e) =>
 												{
@@ -133,68 +135,82 @@ namespace Act_Screen
 
 				}
 
-				else
-				{
-
-					UpdateActionBackgroundColor(false);
-
-					Application.Current.Dispatcher.Invoke(() =>
-					{
-
-						if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder &&
-							rowBorder.Child is Grid rowGrid &&
-								rowGrid.Children.Count > 2 &&
-									rowGrid.Children[2] is StackPanel checkBoxStackPanel &&
-										checkBoxStackPanel.Children.Count > 0 &&
-												checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
-						{
-							yesCheckBox.IsEnabled = false;
-						}
-						if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
-								rowBorder2.Child is Grid rowGrid2 &&
-									rowGrid2.Children.Count > 2 &&
-										rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
-											checkBoxStackPanel2.Children.Count > 0 &&
-													checkBoxStackPanel2.Children[2] is RadioButton NoCheckBox)
-						{
-							NoCheckBox.IsEnabled = false;
-						}
-					});
-
-				}
 			}
 			else
 			{
 
-				UpdateActionBackgroundColor(false);
-
-				Application.Current.Dispatcher.Invoke(() =>
-				{
-
-					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder &&
-						rowBorder.Child is Grid rowGrid &&
-							rowGrid.Children.Count > 2 &&
-								rowGrid.Children[2] is StackPanel checkBoxStackPanel &&
-									checkBoxStackPanel.Children.Count > 0 &&
-											checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
-					{
-						yesCheckBox.IsEnabled = false;
-					}
-					if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
-							rowBorder2.Child is Grid rowGrid2 &&
-								rowGrid2.Children.Count > 2 &&
-									rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
-										checkBoxStackPanel2.Children.Count > 0 &&
-												checkBoxStackPanel2.Children[2] is RadioButton NoCheckBox)
-					{
-						NoCheckBox.IsEnabled = false;
-					}
-				});
+				ErrorReceivedMessage();
 
 			}
 
 		}
 
+		ControlTemplate CreateRadioButtonTemplate(Brush brush, Brush backgroundBrush)
+		{
+			ControlTemplate template = new ControlTemplate(typeof(RadioButton));
+
+			// Create Grid to hold the circuit
+			var grid = new FrameworkElementFactory(typeof(Grid));
+			grid.Name = "RadioButtonGrid";
+
+			// Create outer circle for the circuit
+			var outerCircle = new FrameworkElementFactory(typeof(Ellipse));
+			outerCircle.SetValue(Ellipse.WidthProperty, 30.0);
+			outerCircle.SetValue(Ellipse.HeightProperty, 30.0);
+			outerCircle.SetValue(Shape.StrokeProperty, brush);
+			outerCircle.SetValue(Shape.StrokeThicknessProperty, 2.0);
+			outerCircle.SetValue(Shape.FillProperty, backgroundBrush);
+			outerCircle.Name = "OuterCircle";
+
+			// Add the outer circle to the grid
+			grid.AppendChild(outerCircle);
+
+			// Create inner circle for the radio button
+			var innerCircle = new FrameworkElementFactory(typeof(Ellipse));
+			innerCircle.SetValue(Ellipse.WidthProperty, 16.0);
+			innerCircle.SetValue(Ellipse.HeightProperty, 16.0);
+			innerCircle.SetValue(Ellipse.FillProperty, brush);
+			innerCircle.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+			innerCircle.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
+
+			// Add the inner circle to the grid
+			grid.AppendChild(innerCircle);
+
+			// Add the grid to the template
+			template.VisualTree = grid;
+			return template;
+		}
+
+
+		private void ErrorReceivedMessage()
+		{
+			UpdateActionBackgroundColor(false);
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+
+				if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder &&
+					rowBorder.Child is Grid rowGrid &&
+						rowGrid.Children.Count > 2 &&
+							rowGrid.Children[2] is StackPanel checkBoxStackPanel &&
+								checkBoxStackPanel.Children.Count > 0 &&
+										checkBoxStackPanel.Children[0] is RadioButton yesCheckBox)
+				{
+					yesCheckBox.IsEnabled = false;
+					
+				}
+				if (tableGrid.Children[AcIndexForGreenBackGround] is System.Windows.Controls.Border rowBorder2 &&
+						rowBorder2.Child is Grid rowGrid2 &&
+							rowGrid2.Children.Count > 2 &&
+								rowGrid2.Children[2] is StackPanel checkBoxStackPanel2 &&
+									checkBoxStackPanel2.Children.Count > 0 &&
+											checkBoxStackPanel2.Children[2] is RadioButton NoCheckBox)
+				{
+					NoCheckBox.IsEnabled = false;
+				}
+			});
+
+		}
 		private void DelayTimer_Tick(object sender, EventArgs e)
 		{
 			// Stop the timer
@@ -259,6 +275,7 @@ namespace Act_Screen
 
 		private TextBlock GetActionTextBlock(int rowIndex)
 		{
+
 			TextBlock actionTextBlock = null;
 
 			Application.Current.Dispatcher.Invoke(() =>
@@ -283,8 +300,6 @@ namespace Act_Screen
 
 			return actionTextBlock;
 		}
-
-
 
 		private void AddNewActuator_Click(object sender, RoutedEventArgs e)
 		{
@@ -318,16 +333,16 @@ namespace Act_Screen
 				Foreground = Brushes.Black,
 				Background = Brushes.LightPink,
 				HorizontalAlignment = HorizontalAlignment.Center,
-				VerticalAlignment = VerticalAlignment.Center, 
+				VerticalAlignment = VerticalAlignment.Center,
 				Margin = new Thickness(5),
 				FontFamily = new FontFamily("Arial"),
-				FontSize = 14 
+				FontSize = 14
 			};
 
 			// Create a border around the TextBlock
 			System.Windows.Controls.Border border = new System.Windows.Controls.Border()
 			{
-				BorderBrush = Brushes.Black, 
+				BorderBrush = Brushes.Black,
 				CornerRadius = new CornerRadius(3),
 				Padding = new Thickness(5),
 				Width = 70,
@@ -357,7 +372,7 @@ namespace Act_Screen
 				IsEnabled = false,
 				HorizontalAlignment = HorizontalAlignment.Center,
 				Margin = new Thickness(5),
-				Template = CreateRadioButtonTemplate(Brushes.Green, Brushes.Transparent),
+				Template = CreateRadioButtonTemplate(Brushes.DarkGreen, Brushes.Transparent),
 				Content = "Yes"
 			};
 
@@ -383,7 +398,7 @@ namespace Act_Screen
 				IsEnabled = false,
 				HorizontalAlignment = HorizontalAlignment.Center,
 				Margin = new Thickness(5),
-				Template = CreateRadioButtonTemplate(Brushes.Red, Brushes.Transparent),
+				Template = CreateRadioButtonTemplate(Brushes.DarkRed, Brushes.Transparent),
 				Content = "No"
 			};
 
@@ -464,42 +479,7 @@ namespace Act_Screen
 			// Function to create custom control template for RadioButton
 
 
-			ControlTemplate CreateRadioButtonTemplate(Brush brush, Brush backgroundBrush)
-			{
-				ControlTemplate template = new ControlTemplate(typeof(RadioButton));
-
-				// Create Grid to hold the circuit
-				var grid = new FrameworkElementFactory(typeof(Grid));
-				grid.Name = "RadioButtonGrid";
-
-				// Create outer circle for the circuit
-				var outerCircle = new FrameworkElementFactory(typeof(Ellipse));
-				outerCircle.SetValue(Ellipse.WidthProperty, 30.0);
-				outerCircle.SetValue(Ellipse.HeightProperty, 30.0);
-				outerCircle.SetValue(Shape.StrokeProperty, brush);
-				outerCircle.SetValue(Shape.StrokeThicknessProperty, 2.0);
-				outerCircle.SetValue(Shape.FillProperty, backgroundBrush);
-				outerCircle.Name = "OuterCircle";
-
-				// Add the outer circle to the grid
-				grid.AppendChild(outerCircle);
-
-				// Create inner circle for the radio button
-				var innerCircle = new FrameworkElementFactory(typeof(Ellipse));
-				innerCircle.SetValue(Ellipse.WidthProperty, 16.0);
-				innerCircle.SetValue(Ellipse.HeightProperty, 16.0);
-				innerCircle.SetValue(Ellipse.FillProperty, brush);
-				innerCircle.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-				innerCircle.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
-
-				// Add the inner circle to the grid
-				grid.AppendChild(innerCircle);
-
-				// Add the grid to the template
-				template.VisualTree = grid;
-				return template;
-			}
-
+			
 
 			if (actuator.CurrentActionIndex >= 0 && actuator.CurrentActionIndex < actuator.Actions.Count)
 			{
@@ -568,8 +548,8 @@ namespace Act_Screen
 				// Create and position the arrow
 				arrow1 = new System.Windows.Shapes.Path()
 				{
-					Data = Geometry.Parse("M0,0 L5,5 L10,0 Z"), 
-					Fill = Brushes.Red 
+					Data = Geometry.Parse("M0,0 L5,5 L10,0 Z"),
+					Fill = Brushes.Red
 				};
 				arrow1.Visibility = Visibility.Visible;
 
